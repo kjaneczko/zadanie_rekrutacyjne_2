@@ -10,8 +10,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+/**
+ * Class UserController
+ *
+ * Controller for CRUD users
+ *
+ * @package App\Http\Controllers
+ */
 class UserController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * method used for saving new user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addUser(Request $request) {
         if($request->ajax()) {
             $validator = Validator::make($request->newUserData, [
@@ -86,6 +100,13 @@ class UserController extends Controller
         return response()->json(['message' => 'Unauthorized!', 'errors' => ''], 401);
     }
 
+    /**
+     * @param Request $request
+     *
+     * method used for fetching all users data from database
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function fetchUsers(Request $request) {
         if($request->ajax()) {
             $users = User::with([
