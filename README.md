@@ -77,9 +77,9 @@ factory(App\User::class, 50)->create()->each(function ($user) {
 
 Po zalogowaniu mamy możliwość wyświetlenia formularza dodawania nowego pracownika. Uwzględnia podstawową walidację. Uniemożliwia 
 przejście do kolejnych kroków bez uzupełnienia wszystkich wymaganych pól. Formularz i kolejne kroki renderują się w zależności od wybranych
-stanowisk. **Wstępnie działa tylko tworzenie nowego pracownika.**
+stanowisk. **Wstępnie działa tylko tworzenie nowego pracownika i wyświetlanie danych.**
 
-Kolejnym krokiem będzie oprogramowanie logiki i wykoranie widoków dla szczegółów, edycji i usunięcia wpisów.
+Kolejnym krokiem będzie oprogramowanie logiki i wykoranie widoków dla edycji i usunięcia wpisów.
 
 Dalej trzeba dodać paginację, sortowanie i wyszukiwanie na liście pracowników.
 

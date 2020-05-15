@@ -14,9 +14,8 @@ class UserController extends Controller
 {
     /**
      * @OA\Post(
-     *   path="/api/auth/add_user",
+     *   path="/api/auth/user/create",
      *   summary="Register new user with all needed data",
-     *   operationId="addUser",
      *   @OA\Response(response=201, description="created"),
      *   @OA\Response(response=400, description="validation error"),
      *   @OA\Response(response=401, description="unauthorized"),
@@ -30,7 +29,7 @@ class UserController extends Controller
      * )
      *
      */
-    public function addUser(Request $request) {
+    public function create(Request $request) {
         if($request->ajax()) {
             $validator = Validator::make($request->newUserData, [
                 'email' => 'required|unique:users|max:255|email',
@@ -106,16 +105,15 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *   path="/api/auth/fetch_user",
+     *   path="/api/auth/user/show",
      *   summary="Fetch users",
-     *   operationId="fetchUser",
      *   @OA\Response(response=200, description="successful operation"),
      *   @OA\Response(response=401, description="unauthorized"),
      *   @OA\Response(response=500, description="internal server error")
      * )
      *
      */
-    public function fetchUsers(Request $request) {
+    public function index(Request $request) {
         if($request->ajax()) {
             $users = User::with([
                 'positions' => function($q) {
@@ -123,6 +121,86 @@ class UserController extends Controller
                 }
             ])->paginate(10);
             return response()->json(['message' => 'działa!', 'errors' => '', 'success' => true, 'users' => $users], 200);
+        }
+        return response()->json(json_encode(['message' => 'Unauthorized!', 'errors' => '']), 401);
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/api/auth/user/show/{id}",
+     *   summary="Fetch user data",
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=401, description="unauthorized"),
+     *   @OA\Response(response=500, description="internal server error")
+     * )
+     *
+     */
+    public function show(Request $request, User $user) {
+        if($request->ajax()) {
+            $user = $user->with([
+                'positions' => function($q) {
+                    $q->with('name');
+                },
+                'address',
+                'education'
+            ])
+                ->where('id', $user->id)
+                ->first();
+            return response()->json(['message' => 'działa!', 'success' => true, 'data' => $user], 200);
+        }
+        return response()->json(json_encode(['message' => 'Unauthorized!', 'errors' => '']), 401);
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/api/auth/user/edit/{id}",
+     *   summary="Fetch user data",
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=401, description="unauthorized"),
+     *   @OA\Response(response=500, description="internal server error")
+     * )
+     *
+     */
+    public function edit(Request $request, User $user) {
+        if($request->ajax()) {
+            dd($user);
+            $user = User::with([
+                'positions' => function($q) {
+                    $q->with('name');
+                },
+                'address',
+                'education'
+            ])
+            ->where('id', $request->id)
+            ->first();
+            return response()->json(['message' => 'działa!', 'success' => true, 'data' => $user], 200);
+        }
+        return response()->json(json_encode(['message' => 'Unauthorized!', 'errors' => '']), 401);
+    }
+
+    /**
+     * @OA\Post(
+     *   path="/api/auth/user/remove/{id}",
+     *   summary="Fetch user data",
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=401, description="unauthorized"),
+     *   @OA\Response(response=500, description="internal server error")
+     * )
+     *
+     */
+    public function remove(Request $request, User $user) {
+        if($request->ajax()) {
+            dd($user);
+            $user = User::with([
+                'positions' => function($q) {
+                    $q->with('name');
+                },
+                'address',
+                'education'
+            ])
+            ->where('id', $request->id)
+            ->first();
+            return response()->json(['message' => 'działa!', 'success' => true, 'data' => $user], 200);
         }
         return response()->json(json_encode(['message' => 'Unauthorized!', 'errors' => '']), 401);
     }

@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import {Redirect} from "react-router-dom";
 
 class RemoveUser extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             isLoggedIn: false,
-            user: {}
+            user: {},
+            userId: null,
+            redirect: null
         }
     }
 
@@ -15,7 +18,15 @@ class RemoveUser extends Component {
         let state = localStorage["appState"];
         if (state) {
             let AppState = JSON.parse(state);
-            this.setState({ isLoggedIn: AppState.isLoggedIn, user: AppState.user });
+            AppState.userId = this.props.location.query && this.props.location.query.id ? this.props.location.query.id : null;
+            if (!AppState.userId) {
+                // return this.props.history.push({pathname: '/users'});
+            }
+            this.setState({
+                isLoggedIn: AppState.isLoggedIn,
+                user: AppState.user,
+                userId: AppState.userId
+            });
         }
     }
 

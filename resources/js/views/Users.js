@@ -18,15 +18,14 @@ class Users extends Component {
         let state = localStorage["appState"];
         if (state) {
             let AppState = JSON.parse(state);
-            console.log('Users - DidMount, AppState', AppState);
             this.setState({ isLoggedIn: AppState.isLoggedIn, user: AppState.user });
-            this.fetchUsers(AppState);
+            this.fetchData(AppState);
         }
     }
 
-    fetchUsers(AppState) {
+    fetchData(AppState) {
         axios.get(
-            "/api/auth/fetch_users",
+            "/api/auth/user/list",
             {
                 headers: {
                     Authorization: 'Bearer ' + AppState.user.access_token
@@ -65,9 +64,9 @@ class Users extends Component {
                             Akcje
                         </button>
                         <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a className="dropdown-item" href="#">Szczegóły</a>
-                            <a className="dropdown-item" href="#">Edytuj</a>
-                            <a className="dropdown-item" href="#">Usuń</a>
+                            <NavLink className="nav-link" to={{pathname: `/user`, query: {id: user.id}}} >Szczegóły</NavLink>
+                            <NavLink className="nav-link" to={{pathname: `/edit-user`, query: {id: user.id}}}>Edytuj</NavLink>
+                            <NavLink className="nav-link" to={{pathname: `/remove-user`, query: {id: user.id}}}>Usuń</NavLink>
                         </div>
                     </div>
                 </td>

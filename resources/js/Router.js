@@ -31,7 +31,7 @@ const Main = props => (
         <PrivateRoute path='/logout' component={Logout}/>
 
         {/* Operations on users */}
-        <PrivateRoute path='/user-list' component={UserDetails}/>
+        <PrivateRoute path='/user' component={UserDetails}/>
         <PrivateRoute path='/add-user' component={AddUser}/>
         <PrivateRoute path='/edit-user' component={EditUser}/>
         <PrivateRoute path='/remove-user' component={RemoveUser}/>

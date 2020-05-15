@@ -26,7 +26,15 @@ Route::group([
         'middleware' => 'auth:api'
     ], function() {
         Route::get('logout', 'AuthController@logout');
-        Route::post('add_user', 'UserController@addUser');
-        Route::get('fetch_users', 'UserController@fetchUsers');
+        Route::group([
+            'prefix' => 'user'
+        ], function() {
+            Route::get('list', 'UserController@index');
+            Route::post('create', 'UserController@create');
+            Route::get('show/{user}', 'UserController@show');
+            Route::get('edit/{user}', 'UserController@edit');
+            Route::get('update/{user}', 'UserController@update');
+            Route::get('delete/{user}', 'UserController@delete');
+        });
     });
 });

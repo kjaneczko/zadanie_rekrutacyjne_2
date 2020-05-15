@@ -256,7 +256,7 @@ class AddUser extends Component {
             let userData = this.state.user;
             let newUserData = this.state.newUserData;
             axios.post(
-                "/api/auth/add_user",
+                "/api/auth/user/create",
                 {...userData, newUserData: newUserData},
                 {
                     dataType: 'json',
