@@ -10,21 +10,25 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-/**
- * Class UserController
- *
- * Controller for CRUD users
- *
- * @package App\Http\Controllers
- */
 class UserController extends Controller
 {
     /**
-     * @param Request $request
+     * @OA\Post(
+     *   path="/api/auth/add_user",
+     *   summary="Register new user with all needed data",
+     *   operationId="addUser",
+     *   @OA\Response(response=201, description="created"),
+     *   @OA\Response(response=400, description="validation error"),
+     *   @OA\Response(response=401, description="unauthorized"),
+     *   @OA\Response(response=500, description="internal server error"),
+     *		@OA\Property(
+     *          property="newUserData",
+     *          required=true,
+     *          type="json",
+     *          description=""
+     *      )
+     * )
      *
-     * method used for saving new user
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function addUser(Request $request) {
         if($request->ajax()) {
@@ -95,17 +99,21 @@ class UserController extends Controller
                     }
                 }
             }
-            return response()->json(['message' => 'działa!', 'errors' => '', 'success' => true], 200);
+            return response()->json(['message' => 'działa!', 'errors' => '', 'success' => true], 201);
         }
         return response()->json(['message' => 'Unauthorized!', 'errors' => ''], 401);
     }
 
     /**
-     * @param Request $request
+     * @OA\Post(
+     *   path="/api/auth/fetch_user",
+     *   summary="Fetch users",
+     *   operationId="fetchUser",
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=401, description="unauthorized"),
+     *   @OA\Response(response=500, description="internal server error")
+     * )
      *
-     * method used for fetching all users data from database
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function fetchUsers(Request $request) {
         if($request->ajax()) {

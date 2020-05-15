@@ -6,23 +6,36 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\User;
 
-/**
- * Class AuthController
- *
- * Controller for login, logout users
- *
- * @package App\Http\Controllers
- */
 class AuthController extends Controller
 {
     /**
-     * Create user
+     * @OA\Post(
+     *   path="/api/auth/signup",
+     *   summary="Register user",
+     *   operationId="signup",
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=406, description="not acceptable"),
+     *   @OA\Response(response=500, description="internal server error"),
+     *		@OA\Property(
+     *          property="name",
+     *          required=true,
+     *          type="string",
+     *          description=""
+     *      ),
+     *		@OA\Property(
+     *          property="email",
+     *          required=true,
+     *          type="string",
+     *          description=""
+     *      ),
+     *		@OA\Property(
+     *          property="password",
+     *          required=true,
+     *          type="string",
+     *          description=""
+     *      ),
+     * )
      *
-     * @param  [string] name
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [string] password_confirmation
-     * @return [string] message
      */
     public function signup(Request $request)
     {
@@ -47,14 +60,33 @@ class AuthController extends Controller
     }
 
     /**
-     * Login user and create token
+     * @OA\Post(
+     *   path="/api/auth/login",
+     *   summary="Login",
+     *   operationId="login",
+     *   @OA\Response(response=202, description="accepted"),
+     *   @OA\Response(response=401, description="unauthorized"),
+     *   @OA\Response(response=500, description="internal server error"),
+     *		@OA\Property(
+     *          property="email",
+     *          required=true,
+     *          type="string",
+     *          description=""
+     *      ),
+     *		@OA\Property(
+     *          property="password",
+     *          required=true,
+     *          type="string",
+     *          description=""
+     *      ),
+     *		@OA\Property(
+     *          property="remember_me",
+     *          required=false,
+     *          type="boolean",
+     *          description=""
+     *      ),
+     * )
      *
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [boolean] remember_me
-     * @return [string] access_token
-     * @return [string] token_type
-     * @return [string] expires_at
      */
     public function login(Request $request)
     {
@@ -85,19 +117,24 @@ class AuthController extends Controller
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString()
-        ]);
+        ], 202);
     }
 
     /**
-     * Logout user (Revoke the token)
+     * @OA\Post(
+     *   path="/api/auth/logout",
+     *   summary="Logout - revoke token",
+     *   operationId="logout",
+     *   @OA\Response(response=200, description="successful operation"),
+     *   @OA\Response(response=500, description="internal server error")
+     * )
      *
-     * @return [string] message
      */
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
         return response()->json([
             'message' => 'Successfully logged out'
-        ]);
+        ], 200);
     }
 }
