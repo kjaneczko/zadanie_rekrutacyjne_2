@@ -77,7 +77,7 @@ factory(App\User::class, 50)->create()->each(function ($user) {
 
 Po zalogowaniu mamy możliwość wyświetlenia formularza dodawania nowego pracownika. Uwzględnia podstawową walidację. Uniemożliwia 
 przejście do kolejnych kroków bez uzupełnienia wszystkich wymaganych pól. Formularz i kolejne kroki renderują się w zależności od wybranych
-stanowisk. Wysyłanie formularza działa, ale nie ma jeszcze oprogramowanej logiki CRUD na tych tabelach.
+stanowisk. **Wstępnie działa tylko tworzenie nowego pracownika.**
 
 Kolejnym krokiem będzie oprogramowanie logiki i wykoranie widoków dla szczegółów, edycji i usunięcia wpisów.
 
