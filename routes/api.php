@@ -27,5 +27,6 @@ Route::group([
     ], function() {
         Route::get('logout', 'AuthController@logout');
         Route::post('add_user', 'UserController@addUser');
+        Route::get('fetch_users', 'UserController@fetchUsers');
     });
 });

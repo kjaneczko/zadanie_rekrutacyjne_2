@@ -47,7 +47,7 @@ Zadanie ma na celu implementację aplikacji do zarządzania kontami użytkownika
 **Czas realizacji 7 dni.**
 
 ----------------------------------
-####Instalacja
+#### Instalacja
 1. Tworzymy bazę danych w MySQL.
 2. Aktualizujemy plik .env zmieniając poniższe wartości:
 >DB_DATABASE=database\
@@ -55,6 +55,7 @@ Zadanie ma na celu implementację aplikacji do zarządzania kontami użytkownika
 >DB_PASSWORD=password
 
 ```text
+$ npm install
 $ php artisan migrate
 $ php artisan db:seed
 $ php artisan passport:client --personal

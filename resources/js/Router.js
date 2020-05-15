@@ -8,6 +8,7 @@ import E404 from './views/errors/E404';
 import PrivateRoute from './PrivateRoutes';
 import Profile from './views/Profile';
 import Dashboard from './views/Dashboard';
+import Users from './views/Users';
 // Operations on users
 import UserDetails from './views/users/Details';
 import AddUser from './views/users/Add';
@@ -25,6 +26,7 @@ const Main = props => (
 
         {/* User is LoggedIn */}
         <PrivateRoute path='/dashboard' component={Dashboard}/>
+        <PrivateRoute path='/users' component={Users}/>
         <PrivateRoute path='/profile' component={Profile}/>
         <PrivateRoute path='/logout' component={Logout}/>
 

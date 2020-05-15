@@ -11,10 +11,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\User::class, 50)->create()->each(function ($user) {
+        factory(App\User::class, 5)->create()->each(function ($user) {
             $user->address()->save(factory(App\UserAddress::class)->make());
-            $user->position()->save(factory(App\UserPosition::class)->make());
             $user->education()->save(factory(App\UserEducation::class)->make());
+        });
+
+        App\User::all()->each(function($user) {
+            $user->user_position()->attach(rand(1,2));
         });
     }
 }

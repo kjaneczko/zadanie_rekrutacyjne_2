@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Redirect} from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import {validateEmail, validatePassword, validatePhoneNumber} from '../../functions';
@@ -9,8 +10,10 @@ class AddUser extends Component {
         this.state = {
             isLoggedIn: false,
             user: {},
+            redirect: false,
             formSubmitting: false,
-            positionForm: null, // index of positions
+            positionForm: null,
+            receivedErrors: null,
             errors: {
                 // name: true,
                 // lastName: true,
@@ -250,34 +253,33 @@ class AddUser extends Component {
         let errors = this.checkErrors();
         if(errors.length === 0) {
             console.log('SUBMIT');
-            this.setState({formSubmitting: true});
             let userData = this.state.user;
             let newUserData = this.state.newUserData;
             axios.post(
                 "/api/auth/add_user",
-                {...userData, neUserData: newUserData},
+                {...userData, newUserData: newUserData},
                 {
+                    dataType: 'json',
                     headers: {
                         Authorization: 'Bearer ' + userData.access_token
                     }
                 })
             .then(response => {
                 console.log('response', response);
-                response.data = JSON.parse(response.data);
+                console.log('success', response.data.success);
+                if (response.data.success) {
+                    this.setState({
+                        receivedErrors: null,
+                        redirect: '/users'
+                    });
+                }
                 return response;
             })
-            .then(json => {
-                console.log('success', json.data.success);
-                if (json.data.success) {
-                }
-                else {
-                    alert(`Our System Failed To Register Your Account!`);
-                }
-            })
             .catch(error => {
-                console.log('error', error.response);
-            })
-            .finally(this.setState({error: ''}));
+                if(error.response) {
+                    this.setState({receivedErrors: error.response.data.message});
+                }
+            });
         }
     }
 
@@ -641,10 +643,30 @@ class AddUser extends Component {
         }
     }
 
+    renderErrors() {
+        console.log('showReceivedErrors', this.state.receivedErrors);
+        const receivedErrors = this.state.receivedErrors;
+        let errors = Object.keys(receivedErrors).map(error => (
+            <li key={Math.random()}>{receivedErrors[error][0]}</li>
+        ));
+        return errors;
+    }
+
     render() {
+        if(this.state.redirect) {
+            return <Redirect to={this.state.redirect} />;
+        }
         return (
             <div className="container">
                 <Header userData={this.state.user} userIsLoggedIn={this.state.isLoggedIn}/>
+                {this.state.receivedErrors ?
+                    <div className="alert alert-danger">
+                        <ul className="mb-0">
+                            {this.renderErrors()}
+                        </ul>
+                    </div>
+                    : ''
+                }
                 <div className="row mt-3">
                     <div className="col-xs-12 col-md-10 offset-md-1">
                         <div className="card">

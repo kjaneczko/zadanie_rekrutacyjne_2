@@ -42,11 +42,15 @@ class User extends Authenticatable
         return $this->hasMany(UserAddress::class);
     }
 
-    public function position() {
-        return $this->hasMany(UserAddress::class);
+    public function user_position() {
+        return $this->belongsToMany(Position::class, 'user_position');
+    }
+
+    public function positions() {
+        return $this->hasMany(UserPosition::class);
     }
 
     public function education() {
-        return $this->hasMany(UserAddress::class);
+        return $this->hasMany(UserEducation::class);
     }
 }
